@@ -8,7 +8,7 @@ import ProductDetailsModal from "./components/ProductDetailsModal";
 import ViewCartPopup from "./components/ViewCartPopup";
 import { useFoodLayout } from "./hooks/useFoodLayout";
 import Link from "next/link";
-import { RiArrowLeftLine, RiArrowDownSLine, RiSearchLine, RiUserLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiArrowDownSLine, RiSearchLine, RiUserLine, RiShoppingCartLine } from "react-icons/ri";
 
 interface FoodLayoutProps {
     categoryId: string;
@@ -67,9 +67,17 @@ export default function FoodLayout({
                         </div>
                     </div>
 
-                    <div className="flex gap-4 text-xl text-purple-650">
+                    <div className="flex gap-4 text-xl text-purple-650 items-center">
                         <Link href={`/search?categoryId=${categoryId}`} className="text-purple-705 hover:opacity-80 transition cursor-pointer" aria-label="Search">
                             <RiSearchLine />
+                        </Link>
+                        <Link href="/cart" className="text-purple-705 hover:opacity-80 transition cursor-pointer relative flex items-center" aria-label="Cart">
+                            <RiShoppingCartLine />
+                            {totalItemsInCart > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center border border-white">
+                                    {totalItemsInCart}
+                                </span>
+                            )}
                         </Link>
                         <Link href="/home" className="text-purple-705 hover:opacity-80 transition cursor-pointer" aria-label="Account">
                             <RiUserLine />
@@ -137,6 +145,7 @@ export default function FoodLayout({
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 product={selectedProductForModal}
+                businessId={activeVendorId}
                 onAddToCart={handleModalAdd}
             />
         </main>

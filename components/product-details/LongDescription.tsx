@@ -1,4 +1,4 @@
-"use client";
+import React from "react";
 
 interface LongDescriptionProps {
     htmlContent?: string | null;
@@ -6,25 +6,26 @@ interface LongDescriptionProps {
 }
 
 export default function LongDescription({
-                                            htmlContent,
-                                            shortDescription,
-                                        }: LongDescriptionProps) {
+    htmlContent,
+    shortDescription,
+}: LongDescriptionProps) {
     const hasHtml = !!htmlContent?.trim();
     const hasShort = !!shortDescription?.trim();
 
+    if (!hasHtml && !hasShort) return null;
+
     return (
         <div className="pt-5 pb-8">
-            <h3 className="mb-4 font-bold text-gray-900">
+            <h3 className="mb-4 font-bold text-gray-900 text-left">
                 Description
             </h3>
 
             {/* Short Description */}
             {hasShort && (
-                <div className="mb-6">
+                <div className="mb-6 text-left">
                     <h4 className="mb-2 text-sm font-semibold text-gray-900">
                         Short Description
                     </h4>
-
                     <p className="text-sm leading-7 text-gray-600">
                         {shortDescription}
                     </p>
@@ -33,11 +34,10 @@ export default function LongDescription({
 
             {/* Long Description */}
             {hasHtml && (
-                <div>
+                <div className="text-left">
                     <h4 className="mb-2 text-sm font-semibold text-gray-900">
                         Long Description
                     </h4>
-
                     <div
                         className="text-sm leading-7 text-gray-600"
                         dangerouslySetInnerHTML={{
@@ -45,12 +45,6 @@ export default function LongDescription({
                         }}
                     />
                 </div>
-            )}
-
-            {!hasShort && !hasHtml && (
-                <p className="text-sm italic leading-7 text-gray-500">
-                    No description available for this product.
-                </p>
             )}
         </div>
     );

@@ -24,16 +24,16 @@ export default function RestaurantInfoCard({
             </div>
 
             {/* LOCATION / META INFO */}
-            <div className="flex items-center gap-1 text-gray-600 mt-2 pb-4 text-sm border-b border-gray-100 font-medium">
-                <div className="flex gap-1 items-center">
-                    <RiMapPinLine size={16} className="shrink-0" />
-                    <span>{distance}</span>
-                </div>
-                <span className="w-1 h-1 bg-purple-500 rounded-full mx-1 shrink-0"></span>
-                <span>{area}</span>
-                <span className="w-1 h-1 bg-purple-500 rounded-full mx-1 shrink-0"></span>
-                <span className="text-purple-600 font-semibold">{deliveryTime}</span>
-            </div>
+            {/*<div className="flex items-center gap-1 text-gray-600 mt-2 pb-4 text-sm border-b border-gray-100 font-medium">*/}
+            {/*    <div className="flex gap-1 items-center">*/}
+            {/*        <RiMapPinLine size={16} className="shrink-0" />*/}
+            {/*        <span>{distance}</span>*/}
+            {/*    </div>*/}
+            {/*    <span className="w-1 h-1 bg-purple-500 rounded-full mx-1 shrink-0"></span>*/}
+            {/*    <span>{area}</span>*/}
+            {/*    <span className="w-1 h-1 bg-purple-500 rounded-full mx-1 shrink-0"></span>*/}
+            {/*    <span className="text-purple-600 font-semibold">{deliveryTime}</span>*/}
+            {/*</div>*/}
         </div>
     );
 }

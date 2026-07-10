@@ -68,13 +68,29 @@ export const useFoodLayout = (
         }
     };
 
-    const handleModalAdd = () => {
+    const handleModalAdd = (variantId?: string | null, attributes?: any) => {
         if (!selectedProductForModal) return;
-        const cartItemInfo = cartMap.get(selectedProductForModal.product_id);
+        
+        const finalVariantId = variantId || selectedProductForModal.primary_variant?.variant_id || null;
+
+        const cartItemInfo = cartItems.find(
+            (item) => item.product_id === selectedProductForModal.product_id && 
+                      (!finalVariantId || item.product_variant_id === finalVariantId)
+        );
+
         if (cartItemInfo) {
-            handleIncrement(selectedProductForModal.product_id, cartItemInfo.cartItemId, cartItemInfo.quantity);
+            handleIncrement(selectedProductForModal.product_id, cartItemInfo.id, cartItemInfo.quantity);
         } else {
-            handleAdd(selectedProductForModal);
+            if (!activeVendorId) return;
+            addToCartMutation.mutate({
+                user_id: userId!,
+                business_id: activeVendorId,
+                business_category_id: categoryId,
+                product_id: selectedProductForModal.product_id,
+                product_variant_id: finalVariantId || undefined,
+                quantity: 1,
+                attributes: attributes || null,
+            });
         }
         setIsModalOpen(false);
     };

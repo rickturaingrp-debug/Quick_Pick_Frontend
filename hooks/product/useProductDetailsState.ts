@@ -45,6 +45,7 @@ export const useProductDetailsState = () => {
         (item) => item.product_id === productId && item.product_variant_id === activeVariantId
     );
     const quantity = cartItem ? cartItem.quantity : 0;
+    const totalItemsInCart = cartData?.data?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
     const isCartMutating = addToCartMutation.isPending || updateCartMutation.isPending || removeCartItemMutation.isPending;
 
@@ -94,6 +95,7 @@ export const useProductDetailsState = () => {
         selectedVariantId: activeVariantId,
         setSelectedVariantId,
         quantity,
+        totalItemsInCart,
         handleIncrement,
         handleDecrement,
         isCartMutating,

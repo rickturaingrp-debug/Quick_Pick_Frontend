@@ -20,18 +20,6 @@ export default function ProductInfo({
     // Calculate display discount if percentage is zero but mrp differs
     const displayDiscount = discount > 0 ? discount : mrp > finalPrice ? Math.round(((mrp - finalPrice) / mrp) * 100) : 0;
 
-    // Dynamically calculate estimated delivery date (3 days from today)
-    const getDeliveryDateString = () => {
-        const date = new Date();
-        date.setDate(date.getDate() + 3);
-        return date.toLocaleDateString("en-US", {
-            weekday: "long",
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        });
-    };
-
     return (
         <div className="border-b border-slate-100 pb-4">
             <p className="text-xs text-purple-600 font-semibold mb-1.5 uppercase tracking-wide">
@@ -41,11 +29,7 @@ export default function ProductInfo({
                 {name}
             </h1>
 
-            {/* Dynamic Delivery Timeline info */}
-            <div className="flex items-center gap-1.5 text-gray-500 mt-2 text-xs">
-                <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse"></span>
-                <span>Delivery by {getDeliveryDateString()}</span>
-            </div>
+
 
             {/* Price Details */}
             <div className="pt-4 flex items-center gap-3">

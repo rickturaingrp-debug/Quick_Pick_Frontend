@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { RiArrowLeftLine, RiSearchLine, RiUserLine, RiArrowDownSLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiSearchLine, RiUserLine, RiArrowDownSLine, RiShoppingCartLine } from "react-icons/ri";
 import { useBusinessSubCategories } from "@/hooks/category/useBusinessSubCategories";
 import { useBusinessCategories } from "@/hooks/category/useBusinessCategories";
 import { useVendors } from "@/hooks/vendor/useVendors";
+import { useCart } from "@/hooks/cart/useCart";
 import CategoryCard from "@/components/home/CategoryCard";
 import SubcategoryHeader from "@/components/category/SubcategoryHeader";
 import BottomNavigation from "@/components/home/BottomNavigation";
@@ -17,7 +18,7 @@ export default function SubcategoryPage() {
     const params = useParams();
     const id = params.id as string;
     const [search, setSearch] = useState("");
-    const { selectedAddress, openLocationPicker } = useAuthContext();
+    const { selectedAddress, openLocationPicker, userId } = useAuthContext();
 
     // Fetch categories and subcategories to resolve name and check if it is food category
     const { data: categoriesResponse } = useBusinessCategories();
@@ -27,6 +28,10 @@ export default function SubcategoryPage() {
     const subcategories = apiResponse?.data || [];
     const categories = categoriesResponse?.data || [];
     const vendors = vendorsResponse?.data || [];
+
+    const { data: cartResponse } = useCart(userId!);
+    const cartItems = cartResponse?.data || [];
+    const totalItemsInCart = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     const currentCategory = categories.find((cat) => cat.id === id);
     const categoryName = currentCategory?.name || subcategories[0]?.category?.name || "Subcategories";
@@ -64,13 +69,21 @@ export default function SubcategoryPage() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 text-xl text-purple-600">
+                        <div className="flex gap-4 text-xl text-purple-600 items-center">
                             <Link
                                 href={`/search?categoryId=${id}`}
                                 className="text-purple-705 flex items-center hover:opacity-80 transition cursor-pointer"
                                 aria-label="Search"
                             >
                                 <RiSearchLine />
+                            </Link>
+                            <Link href="/cart" className="text-purple-705 hover:opacity-80 transition cursor-pointer relative flex items-center" aria-label="Cart">
+                                <RiShoppingCartLine />
+                                {totalItemsInCart > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center border border-white">
+                                        {totalItemsInCart}
+                                    </span>
+                                )}
                             </Link>
                             <Link href="/home" className="text-purple-705 hover:opacity-80 transition" aria-label="Account">
                                 <RiUserLine />

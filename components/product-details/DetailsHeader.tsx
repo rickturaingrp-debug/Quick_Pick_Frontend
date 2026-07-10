@@ -19,7 +19,7 @@ interface DetailsHeaderProps {
 
 export default function DetailsHeader({
     onOpenLocation,
-    cartCount = 3,
+    cartCount = 0,
 }: DetailsHeaderProps) {
     const router = useRouter();
     const { selectedAddress } = useAuthContext();

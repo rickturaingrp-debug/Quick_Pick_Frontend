@@ -17,6 +17,7 @@ export default function ProductDetailsPage() {
     const {
         setSelectedVariantId,
         quantity,
+        totalItemsInCart,
         handleIncrement,
         handleDecrement,
         productDetails,
@@ -75,7 +76,7 @@ export default function ProductDetailsPage() {
             {/* Header Component */}
             <DetailsHeader
                 onOpenLocation={openLocationPicker}
-                cartCount={quantity}
+                cartCount={totalItemsInCart}
             />
 
             {/* Product Image Gallery Slider */}
@@ -91,7 +92,7 @@ export default function ProductDetailsPage() {
                     {/* Basic Info (Title, Category, Timeline, Pricing) */}
                     <ProductInfo
                         name={productDetails.name}
-                        categoryName={productDetails.status_label || "Active"}
+                        categoryName={productDetails.business?.business_name || productDetails.status_label || "Product"}
                         mrp={mrp}
                         finalPrice={finalPrice}
                         discount={discount}
@@ -105,13 +106,14 @@ export default function ProductDetailsPage() {
                         onSelectVariant={setSelectedVariantId}
                     />
 
-                    {/* Specifications Attributes Table */}
+                    {/* Specifications Table */}
                     <SpecsTable
-                        attributes={activeVariant?.attributes || []}
+                        attributes={activeVariant?.attributes}
                         sku={activeVariant?.sku}
                         barcode={activeVariant?.barcode}
                         totalStock={activeVariant?.total_stock}
-                        statusLabel={productDetails.status_label}
+                        manufactureDate={activeVariant?.manufacture_date}
+                        expiryDate={activeVariant?.expiry_date}
                     />
 
                     <LongDescription
@@ -131,8 +133,8 @@ export default function ProductDetailsPage() {
 
             {/* View Cart Bottom Drawer Overlay */}
             <CartBottomPopup
-                itemCount={quantity}
-                show={quantity > 0}
+                itemCount={totalItemsInCart}
+                show={totalItemsInCart > 0}
             />
 
         </main>
