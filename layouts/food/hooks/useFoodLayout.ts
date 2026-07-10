@@ -46,6 +46,7 @@ export const useFoodLayout = (
             business_id: activeVendorId,
             business_category_id: categoryId,
             product_id: product.product_id,
+            product_variant_id: product.primary_variant?.variant_id || undefined,
             quantity: 1,
         });
     };
