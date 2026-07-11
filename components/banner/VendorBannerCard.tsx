@@ -18,7 +18,11 @@ export default function VendorBannerCard({
     const { data: bannerData, isLoading } = useVendorBanners(businessId, bannerType);
     const banner = bannerData?.data?.[0];
 
-    const bannerImage = banner?.image!;
+    const bannerImage = banner?.image;
+
+    if (!businessId) {
+        return null;
+    }
 
     if (isLoading) {
         return (
@@ -26,6 +30,10 @@ export default function VendorBannerCard({
                 <div className={`w-full rounded-lg bg-gray-200 animate-pulse ${aspectRatioClass}`} />
             </div>
         );
+    }
+
+    if (!bannerImage) {
+        return null;
     }
 
     return (

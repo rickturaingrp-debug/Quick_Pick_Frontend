@@ -318,7 +318,12 @@ export default function CheckoutPage() {
                             <div className="flex justify-between text-gray-600">
                                 <span>Payment Mode:</span>
                                 <span className="font-bold text-gray-900">
-                                    {successOrder.payment_method === 1 ? "Bazaar Wallet" : successOrder.payment_method === 2 ? "Online Payment" : "COD"}
+                                    {successOrder.payment_method_label || 
+                                     (successOrder.payment_method === 1 || successOrder.payment_method === "WALLET" ? "Bazaar Wallet" : 
+                                      successOrder.payment_method === 2 || successOrder.payment_method === "ONLINE" ? "Online Payment" : 
+                                      successOrder.payment_method === 3 || successOrder.payment_method === "COD" ? "Cash On Delivery (COD)" : 
+                                      paymentMethod === "WALLET" ? "Bazaar Wallet" : 
+                                      paymentMethod === "ONLINE" ? "Online Payment" : "Cash On Delivery (COD)")}
                                 </span>
                             </div>
                         </div>
