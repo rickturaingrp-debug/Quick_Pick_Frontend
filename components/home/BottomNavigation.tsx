@@ -17,11 +17,11 @@ export default function BottomNavigation() {
             href: "/home",
             icon: RiHome5Fill,
         },
-        {
-            name: "Category",
-            href: "/category",
-            icon: RiLayoutGridLine,
-        },
+        // {
+        //     name: "Category",
+        //     href: "/home",
+        //     icon: RiLayoutGridLine,
+        // },
         {
             name: "Orders",
             href: "/orders",
@@ -35,7 +35,10 @@ export default function BottomNavigation() {
                 {menus.map((menu) => {
                     const Icon = menu.icon;
 
-                    const active = pathname === menu.href;
+                    const cleanPathname = pathname ? pathname.replace(/\/$/, "") : "";
+                    const cleanHref = menu.href.replace(/\/$/, "");
+                    const active = cleanPathname === cleanHref;
+
 
                     return (
                         <Link
