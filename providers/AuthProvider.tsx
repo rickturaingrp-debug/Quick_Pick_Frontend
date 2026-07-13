@@ -126,7 +126,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     };
 
     const isAuthenticated = !!token && userId !== null;
-    const isPublicRoute = pathname === "/login";
+    const isPublicRoute = pathname ? pathname.replace(/\/$/, "") === "/login" : false;
+
 
     // Route Protection & Redirect logic
     useEffect(() => {
