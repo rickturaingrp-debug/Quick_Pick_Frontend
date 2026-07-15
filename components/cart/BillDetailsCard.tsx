@@ -4,25 +4,19 @@ import { RiFileListLine, RiShoppingBagLine, RiMotorbikeLine } from "react-icons/
 
 interface BillDetailsCardProps {
     itemsTotal: number;
-    handlingCharge: number;
+    platformCharge: number;
     deliveryCharge: number;
-    freeDeliveryThreshold?: number;
     itemCount: number;
 }
 
 export default function BillDetailsCard({
     itemsTotal,
-    handlingCharge,
+    platformCharge,
     deliveryCharge,
-    freeDeliveryThreshold = typeof process !== "undefined" && process.env.NEXT_PUBLIC_FREE_DELIVERY_THRESHOLD ? Number(process.env.NEXT_PUBLIC_FREE_DELIVERY_THRESHOLD) : 150,
     itemCount,
 }: BillDetailsCardProps) {
     
-    // Determine if delivery is free
-    const isFreeDelivery = itemsTotal >= freeDeliveryThreshold;
-    const actualDeliveryCharge = isFreeDelivery ? 0 : deliveryCharge;
-    const grandTotal = itemsTotal + handlingCharge + actualDeliveryCharge;
-    const amountNeededForFreeDelivery = freeDeliveryThreshold - itemsTotal;
+    const grandTotal = itemsTotal + platformCharge + deliveryCharge;
 
     return (
         <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3.5 border border-gray-50">
@@ -39,14 +33,14 @@ export default function BillDetailsCard({
                 </div>
             </div>
 
-            {/* Handling Charge */}
+            {/* Platform Charge */}
             <div className="flex justify-between text-xs text-gray-600">
                 <div className="flex items-center gap-2">
                     <RiShoppingBagLine className="text-gray-400" size={16} />
-                    Handling charge
+                    Platform charge
                 </div>
                 <div className="font-medium text-gray-900">
-                    ₹{handlingCharge}
+                    ₹{platformCharge}
                 </div>
             </div>
 
@@ -56,30 +50,10 @@ export default function BillDetailsCard({
                     <RiMotorbikeLine className="text-gray-400" size={16} />
                     Delivery charge
                 </div>
-                <div className="font-medium text-gray-900">
-                    {isFreeDelivery ? (
-                        <div className="flex items-center gap-1.5">
-                            <span className="line-through text-gray-400">₹{deliveryCharge}</span>
-                            <span className="text-green-600 font-semibold">FREE</span>
-                        </div>
-                    ) : (
-                        `₹${deliveryCharge}`
-                    )}
+                <div className="font-medium text-green-600 font-semibold">
+                    FREE
                 </div>
             </div>
-
-            {/* Free Delivery Promo Message */}
-            {!isFreeDelivery && amountNeededForFreeDelivery > 0 && (
-                <p className="text-orange-500 text-[11px] font-medium bg-orange-50/50 px-2.5 py-1.5 rounded-lg border border-orange-100/50">
-                    Shop for ₹{amountNeededForFreeDelivery} more to get FREE delivery
-                </p>
-            )}
-
-            {isFreeDelivery && (
-                <p className="text-green-600 text-[11px] font-medium bg-green-50/50 px-2.5 py-1.5 rounded-lg border border-green-100/50">
-                    🎉 Free delivery applied to this order!
-                </p>
-            )}
 
             <hr className="border-gray-100" />
 

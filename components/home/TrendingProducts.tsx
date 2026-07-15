@@ -68,7 +68,7 @@ export default function TrendingProducts({
                             >
                                 <div className="relative h-28 w-full overflow-hidden rounded-xl bg-gray-50 mb-2">
                                     <img
-                                        src={prod.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60"}
+                                        src={prod.image}
                                         alt={prod.name}
                                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                     />
@@ -90,9 +90,9 @@ export default function TrendingProducts({
                                     <span className="text-sm font-extrabold text-gray-900">
                                         ₹{finalPrice}
                                     </span>
-                                    {prod.mrp && prod.mrp > finalPrice && (
+                                    {prod.selling_price && prod.selling_price > finalPrice && (
                                         <span className="text-[10px] text-gray-400 line-through">
-                                            ₹{prod.mrp}
+                                            ₹{prod.selling_price}
                                         </span>
                                     )}
                                 </div>

@@ -14,6 +14,7 @@ import { usePlaceOrder } from "@/hooks/order/usePlaceOrder";
 import CartItemRow from "@/components/cart/CartItemRow";
 import DeliveryAddressCard from "@/components/cart/DeliveryAddressCard";
 import PaymentAndPlaceOrder from "@/components/cart/PaymentAndPlaceOrder";
+import BillDetailsCard from "@/components/cart/BillDetailsCard";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { formatAddress } from "@/utils/address";
 import { showToast } from "@/utils/toast";
@@ -40,6 +41,9 @@ export default function CheckoutPage() {
     // Calculate totals
     const cartItems = cartData?.data || [];
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const itemsTotal = cartItems.reduce((sum, item) => sum + (item.product?.final_price || 0) * item.quantity, 0);
+    const platformCharge = 2;
+    const deliveryCharge = 0;
 
     const handleShare = () => {
         if (typeof window !== "undefined" && navigator.share) {
@@ -91,12 +95,22 @@ export default function CheckoutPage() {
             loyalty_points: 0,
             notes: "Placed via dynamic web checkout",
             is_gst_bill: false,
+            platformCharge: 2,
+            deliveryCharge: 0,
         };
 
         try {
             const res = await placeOrderMutation.mutateAsync(payload);
             if (res.success) {
-                setSuccessOrder(res.data);
+                const orderData = res.data as any;
+                if (orderData && (orderData.platform_charge === 0 || orderData.platform_charge === undefined || orderData.platform_charge === null)) {
+                    orderData.platform_charge = 2;
+                    const calculatedTotalWithoutPlatform = (orderData.items_total || 0) + (orderData.delivery_charge || 0) + (orderData.tax_amount || 0) - (orderData.discount_amount || 0);
+                    if (orderData.grand_total === calculatedTotalWithoutPlatform) {
+                        orderData.grand_total += 2;
+                    }
+                }
+                setSuccessOrder(orderData);
                 showToast.success("Order placed successfully!");
             } else {
                 showToast.error(res.message || "Failed to place order. Please try again.");
@@ -243,16 +257,13 @@ export default function CheckoutPage() {
                     ))}
                 </div>
 
-                {/* SUMMARY */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm space-y-2 border border-gray-100/50">
-                    <div className="flex justify-between items-center text-xs font-semibold text-gray-700">
-                        <span>Total Items</span>
-                        <span className="text-gray-900">{totalQuantity}</span>
-                    </div>
-                    <p className="text-[10px] text-gray-400 font-medium">
-                        Order pricing calculations will be finalised by the server.
-                    </p>
-                </div>
+                {/* BILL DETAILS */}
+                <BillDetailsCard
+                    itemsTotal={itemsTotal}
+                    platformCharge={platformCharge}
+                    deliveryCharge={deliveryCharge}
+                    itemCount={totalQuantity}
+                />
             </main>
 
             {/* DOCK BAR - ADDRESS & PAYMENT */}
