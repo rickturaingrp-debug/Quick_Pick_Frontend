@@ -15,13 +15,17 @@ import {
     RiBox3Line,
     RiShoppingBagLine,
     RiCloseLine,
+    RiShoppingCartLine,
 } from "react-icons/ri";
+import Link from "next/link";
 import { useOrderDetails } from "@/hooks/order/useOrderDetails";
 import { useCancelOrder } from "@/hooks/order/useCancelOrder";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useCart } from "@/hooks/cart/useCart";
 import CancelOrderSheet from "@/components/orders/CancelOrderSheet";
 import { categoryApi } from "@/lib/axios";
 import { showToast } from "@/utils/toast";
+import HeaderProfileMenu from "@/components/home/HeaderProfileMenu";
 
 const STATUS_STEPS = [
     { code: 0, label: "Pending", icon: RiShoppingBagLine },
@@ -43,6 +47,8 @@ export default function OrderDetailsPage() {
 
     // Queries & Mutations
     const { data: orderDetailsData, isLoading, isError, refetch } = useOrderDetails(orderId);
+    const { data: cartData } = useCart(userId!);
+    const cartCount = cartData?.data?.reduce((sum, item) => sum + item.quantity, 0) || 0;
     const cancelOrderMutation = useCancelOrder(orderId, userId);
 
     const order = orderDetailsData?.data;
@@ -186,16 +192,31 @@ export default function OrderDetailsPage() {
                     </div>
                 </div>
 
-                {!isPending && !isCancelled && (
-                    <button
-                        onClick={handleDownloadInvoice}
-                        disabled={downloadingInvoice}
-                        className="flex items-center gap-1 py-1.5 px-3 text-[#2874F0] hover:bg-blue-50 active:scale-95 disabled:opacity-50 text-xs font-bold rounded transition border border-[#2874F0]/30"
+                <div className="flex gap-4 items-center">
+                    {!isPending && !isCancelled && (
+                        <button
+                            onClick={handleDownloadInvoice}
+                            disabled={downloadingInvoice}
+                            className="flex items-center gap-1 py-1.5 px-3 text-[#2874F0] hover:bg-blue-50 active:scale-95 disabled:opacity-50 text-xs font-bold rounded transition border border-[#2874F0]/30 cursor-pointer"
+                        >
+                            <RiFilePdfLine size={15} />
+                            Invoice
+                        </button>
+                    )}
+                    <HeaderProfileMenu />
+                    <Link
+                        href="/cart"
+                        className="relative hover:opacity-80 flex items-center justify-center cursor-pointer text-purple-600"
+                        aria-label="View Cart"
                     >
-                        <RiFilePdfLine size={15} />
-                        {downloadingInvoice ? "Generating..." : "Invoice"}
-                    </button>
-                )}
+                        <RiShoppingCartLine size={22} />
+                        {cartCount > 0 && (
+                            <span className="absolute -right-1.5 -top-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-extrabold text-white border border-white">
+                                {cartCount}
+                            </span>
+                        )}
+                    </Link>
+                </div>
             </header>
 
             <main className="p-3 space-y-3 flex-1">

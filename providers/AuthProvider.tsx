@@ -178,9 +178,9 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         );
     }
 
-    // Modal is forced open on login if the user has no selected delivery address
-    const showLocationPicker = isAuthenticated && (!selectedAddress || isLocationPickerOpen);
-    const preventClosePicker = isAuthenticated && !selectedAddress;
+    // Modal is NOT forced open on login, only shown if explicitly opened
+    const showLocationPicker = isAuthenticated && isLocationPickerOpen;
+    const preventClosePicker = false;
 
     return (
         <AuthContext.Provider value={value}>

@@ -17,11 +17,11 @@ export default function BottomNavigation() {
             href: "/home",
             icon: RiHome5Fill,
         },
-        // {
-        //     name: "Category",
-        //     href: "/home",
-        //     icon: RiLayoutGridLine,
-        // },
+        {
+            name: "Category",
+            href: "/category",
+            icon: RiLayoutGridLine,
+        },
         {
             name: "Orders",
             href: "/orders",
@@ -37,8 +37,13 @@ export default function BottomNavigation() {
 
                     const cleanPathname = pathname ? pathname.replace(/\/$/, "") : "";
                     const cleanHref = menu.href.replace(/\/$/, "");
-                    const active = cleanPathname === cleanHref;
-
+                    
+                    // Match Home exactly, Category for any category subroutes, and others exactly
+                    const active = menu.name === "Home"
+                        ? cleanPathname === "/home"
+                        : menu.name === "Category"
+                        ? cleanPathname.startsWith("/category")
+                        : cleanPathname === cleanHref;
 
                     return (
                         <Link
@@ -46,7 +51,7 @@ export default function BottomNavigation() {
                             href={menu.href}
                             className={`flex flex-1 flex-col items-center text-xs ${
                                 active
-                                    ? "text-purple-600"
+                                    ? "text-purple-600 font-semibold"
                                     : "text-gray-500"
                             }`}
                         >
@@ -57,7 +62,7 @@ export default function BottomNavigation() {
                 })}
 
                 <Link
-                    href="/dashboard"
+                    href="/home"
                     className="rounded-full bg-gradient-to-b from-purple-500 to-purple-700 px-5 py-3 text-xs font-semibold text-white"
                 >
                     Reshera

@@ -6,11 +6,11 @@ import {
     RiArrowLeftLine,
     RiArrowDownSLine,
     RiSearchLine,
-    RiUserLine,
-    RiShoppingBag3Line,
+    RiShoppingCartLine,
 } from "react-icons/ri";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { formatAddress } from "@/utils/address";
+import HeaderProfileMenu from "../home/HeaderProfileMenu";
 
 interface DetailsHeaderProps {
     onOpenLocation: () => void;
@@ -30,15 +30,15 @@ export default function DetailsHeader({
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => router.back()}
-                        className="inline-flex justify-center items-center bg-purple-700 w-8 h-8 rounded-full text-white hover:bg-purple-800 transition"
+                        className="inline-flex justify-center items-center bg-purple-700 w-8 h-8 rounded-full text-white hover:bg-purple-800 transition cursor-pointer"
                     >
                         <RiArrowLeftLine size={18} />
                     </button>
-                    <div>
+                    <div className="text-left">
                         <p className="text-xs text-gray-500">Delivering to</p>
                         <button
                             onClick={onOpenLocation}
-                            className="font-medium text-purple-700 text-sm flex items-center gap-1 max-w-[180px] hover:opacity-85"
+                            className="font-medium text-purple-700 text-sm flex items-center gap-1 max-w-[180px] hover:opacity-85 cursor-pointer text-left"
                         >
                             <span className="truncate">
                                 {selectedAddress
@@ -50,21 +50,23 @@ export default function DetailsHeader({
                     </div>
                 </div>
 
-                <div className="flex gap-4 text-xl text-purple-600 items-center">
-                    <button className="hover:opacity-80">
+                <div className="flex gap-4 text-xl text-purple-650 items-center">
+                    <button className="hover:opacity-80 cursor-pointer">
                         <RiSearchLine size={22} />
                     </button>
-                    <button className="hover:opacity-80">
-                        <RiUserLine size={22} />
-                    </button>
+                    
+                    {/* User Profile Menu */}
+                    <HeaderProfileMenu />
+
+                    {/* Cart Icon */}
                     <Link
                         href="/cart"
-                        className="relative hover:opacity-80 flex items-center justify-center"
+                        className="relative hover:opacity-80 flex items-center justify-center cursor-pointer"
                         aria-label="View Cart"
                     >
-                        <RiShoppingBag3Line size={22} />
+                        <RiShoppingCartLine size={22} />
                         {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold border border-white">
                                 {cartCount}
                             </span>
                         )}

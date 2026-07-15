@@ -17,6 +17,7 @@ import PaymentAndPlaceOrder from "@/components/cart/PaymentAndPlaceOrder";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { formatAddress } from "@/utils/address";
 import { showToast } from "@/utils/toast";
+import HeaderProfileMenu from "@/components/home/HeaderProfileMenu";
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -71,6 +72,12 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async () => {
         if (cartItems.length === 0) return;
+
+        if (!selectedAddress) {
+            showToast.error("Please select a delivery address before placing your order.");
+            openLocationPicker();
+            return;
+        }
 
         // Take business details from the first item
         const firstItem = cartItems[0];
@@ -168,6 +175,7 @@ export default function CheckoutPage() {
                         </button>
                         <h3 className="font-bold text-gray-800 text-sm">My Cart</h3>
                     </div>
+                    <HeaderProfileMenu />
                 </header>
 
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white m-4 rounded-3xl shadow-sm border border-gray-100/50">
@@ -204,13 +212,16 @@ export default function CheckoutPage() {
                     <h3 className="font-bold text-gray-800 text-sm">My Cart</h3>
                 </div>
 
-                <button
-                    onClick={handleShare}
-                    className="flex gap-1.5 py-1.5 px-4 border border-purple-200 rounded-full items-center text-purple-700 hover:bg-purple-50 transition active:scale-95"
-                >
-                    <RiShareLine size={14} />
-                    <span className="text-[11px] font-bold">Share</span>
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={handleShare}
+                        className="flex gap-1.5 py-1.5 px-4 border border-purple-200 rounded-full items-center text-purple-700 hover:bg-purple-50 transition active:scale-95 cursor-pointer shrink-0"
+                    >
+                        <RiShareLine size={14} />
+                        <span className="text-[11px] font-bold">Share</span>
+                    </button>
+                    <HeaderProfileMenu />
+                </div>
             </header>
 
             {/* MAIN CONTENT */}

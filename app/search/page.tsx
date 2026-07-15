@@ -3,9 +3,12 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { RiArrowLeftLine, RiSearchLine, RiCloseLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiSearchLine, RiCloseLine, RiShoppingCartLine } from "react-icons/ri";
 import { useVendors } from "@/hooks/vendor/useVendors";
 import { useBusinessCategories } from "@/hooks/category/useBusinessCategories";
+import { useCart } from "@/hooks/cart/useCart";
+import { useAuthContext } from "@/providers/AuthProvider";
+import HeaderProfileMenu from "@/components/home/HeaderProfileMenu";
 import BottomNavigation from "@/components/home/BottomNavigation";
 
 function SearchContent() {
@@ -18,6 +21,9 @@ function SearchContent() {
     // Fetch vendors in this category
     const { data: vendorsResponse, isLoading } = useVendors(categoryId);
     const { data: categoriesResponse } = useBusinessCategories();
+    const { userId } = useAuthContext();
+    const { data: cartData } = useCart(userId!);
+    const cartCount = cartData?.data?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     const vendors = vendorsResponse?.data || [];
     const categories = categoriesResponse?.data || [];
@@ -44,13 +50,13 @@ function SearchContent() {
             <header className="sticky top-0 z-40 bg-white border-b border-gray-100 p-4 flex items-center gap-3">
                 <button
                     onClick={() => router.back()}
-                    className="inline-flex justify-center items-center bg-gray-100 hover:bg-gray-200 w-9 h-9 rounded-full transition cursor-pointer"
+                    className="inline-flex justify-center items-center bg-gray-100 hover:bg-gray-200 w-9 h-9 rounded-full transition cursor-pointer shrink-0"
                     aria-label="Go back"
                 >
                     <RiArrowLeftLine className="text-gray-700" size={20} />
                 </button>
 
-                <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
+                <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 min-w-0">
                     <RiSearchLine className="text-gray-400 shrink-0" size={18} />
                     <input
                         ref={inputRef}
@@ -69,6 +75,23 @@ function SearchContent() {
                             <RiCloseLine size={18} />
                         </button>
                     )}
+                </div>
+
+                <div className="flex gap-3 text-xl text-purple-650 items-center shrink-0">
+                    <HeaderProfileMenu />
+                    
+                    <Link
+                        href="/cart"
+                        className="relative hover:opacity-80 flex items-center justify-center cursor-pointer text-purple-600"
+                        aria-label="View Cart"
+                    >
+                        <RiShoppingCartLine size={22} />
+                        {cartCount > 0 && (
+                            <span className="absolute -right-1.5 -top-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-extrabold text-white border border-white">
+                                {cartCount}
+                            </span>
+                        )}
+                    </Link>
                 </div>
             </header>
 

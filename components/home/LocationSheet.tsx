@@ -7,6 +7,8 @@ import {
     RiFocus3Line,
     RiArrowRightSLine,
     RiHome4Line,
+    RiBriefcaseLine,
+    RiMapPinLine,
 } from "react-icons/ri";
 import { useUserAddresses } from "@/hooks/address/useUserAddresses";
 import { UserAddress } from "@/types/address";
@@ -147,7 +149,13 @@ export default function LocationSheet({
                                     }`}
                                 >
                                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-200 shrink-0">
-                                        <RiHome4Line className="text-purple-700" size={20} />
+                                        {addr.type?.toLowerCase() === "work" ? (
+                                            <RiBriefcaseLine className="text-purple-700" size={20} />
+                                        ) : addr.type?.toLowerCase() === "home" ? (
+                                            <RiHome4Line className="text-purple-700" size={20} />
+                                        ) : (
+                                            <RiMapPinLine className="text-purple-700" size={20} />
+                                        )}
                                     </div>
 
                                     <div className="flex-1 min-w-0">

@@ -5,12 +5,12 @@ import {
     RiArrowLeftLine,
     RiArrowDownSLine,
     RiSearchLine,
-    RiUserLine,
-    RiShoppingBag3Line,
+    RiShoppingCartLine,
 } from "react-icons/ri";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useCart } from "@/hooks/cart/useCart";
 import { formatAddress } from "@/utils/address";
+import HeaderProfileMenu from "../home/HeaderProfileMenu";
 
 interface DetailHeaderProps {
     categoryId: string;
@@ -25,7 +25,7 @@ export default function DetailHeader({
 }: DetailHeaderProps) {
     const { userId, selectedAddress } = useAuthContext();
     const { data: cartData } = useCart(userId!);
-    const cartCount = cartData?.data?.length || 0;
+    const cartCount = cartData?.data?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     return (
         <header className="sticky top-0 z-40 bg-white px-4 py-4 shadow-md">
@@ -37,7 +37,7 @@ export default function DetailHeader({
                     >
                         <RiArrowLeftLine size={18} />
                     </Link>
-                    <div>
+                    <div className="text-left">
                         <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Delivering to</p>
                         <button
                             onClick={onOpenLocation}
@@ -52,22 +52,24 @@ export default function DetailHeader({
                         </button>
                     </div>
                 </div>
-
-                <div className="flex gap-4 text-xl text-purple-600 items-center">
-                    <button onClick={onOpenFilter} className="hover:opacity-80">
+ 
+                <div className="flex gap-4 text-xl text-purple-650 items-center">
+                    <button onClick={onOpenFilter} className="hover:opacity-80 cursor-pointer">
                         <RiSearchLine size={22} />
                     </button>
-                    <button className="hover:opacity-80">
-                        <RiUserLine size={22} />
-                    </button>
+                    
+                    {/* User profile dropdown with wishlist / logout */}
+                    <HeaderProfileMenu />
+
+                    {/* Cart button */}
                     <Link
                         href="/cart"
-                        className="relative hover:opacity-80 flex items-center justify-center"
+                        className="relative hover:opacity-80 flex items-center justify-center cursor-pointer"
                         aria-label="View Cart"
                     >
-                        <RiShoppingBag3Line size={22} />
+                        <RiShoppingCartLine size={22} />
                         {cartCount > 0 && (
-                            <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                            <span className="absolute -right-1.5 -top-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-extrabold text-white border border-white">
                                 {cartCount}
                             </span>
                         )}

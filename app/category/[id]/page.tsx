@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { RiArrowLeftLine, RiSearchLine, RiUserLine, RiArrowDownSLine, RiShoppingCartLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiSearchLine, RiArrowDownSLine, RiShoppingCartLine } from "react-icons/ri";
+import HeaderProfileMenu from "@/components/home/HeaderProfileMenu";
 import { useBusinessSubCategories } from "@/hooks/category/useBusinessSubCategories";
 import { useBusinessCategories } from "@/hooks/category/useBusinessCategories";
 import { useVendors } from "@/hooks/vendor/useVendors";
@@ -69,7 +70,7 @@ export default function SubcategoryPage() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 text-xl text-purple-600 items-center">
+                        <div className="flex gap-4 text-xl text-purple-650 items-center">
                             <Link
                                 href={`/search?categoryId=${id}`}
                                 className="text-purple-705 flex items-center hover:opacity-80 transition cursor-pointer"
@@ -77,6 +78,7 @@ export default function SubcategoryPage() {
                             >
                                 <RiSearchLine />
                             </Link>
+                            <HeaderProfileMenu />
                             <Link href="/cart" className="text-purple-705 hover:opacity-80 transition cursor-pointer relative flex items-center" aria-label="Cart">
                                 <RiShoppingCartLine />
                                 {totalItemsInCart > 0 && (
@@ -84,9 +86,6 @@ export default function SubcategoryPage() {
                                         {totalItemsInCart}
                                     </span>
                                 )}
-                            </Link>
-                            <Link href="/home" className="text-purple-705 hover:opacity-80 transition" aria-label="Account">
-                                <RiUserLine />
                             </Link>
                         </div>
                     </div>

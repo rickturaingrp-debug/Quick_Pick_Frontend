@@ -8,7 +8,8 @@ import ProductDetailsModal from "./components/ProductDetailsModal";
 import ViewCartPopup from "./components/ViewCartPopup";
 import { useFoodLayout } from "./hooks/useFoodLayout";
 import Link from "next/link";
-import { RiArrowLeftLine, RiArrowDownSLine, RiSearchLine, RiUserLine, RiShoppingCartLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiArrowDownSLine, RiSearchLine, RiShoppingCartLine } from "react-icons/ri";
+import HeaderProfileMenu from "../../components/home/HeaderProfileMenu";
 
 interface FoodLayoutProps {
     categoryId: string;
@@ -71,6 +72,7 @@ export default function FoodLayout({
                         <Link href={`/search?categoryId=${categoryId}`} className="text-purple-705 hover:opacity-80 transition cursor-pointer" aria-label="Search">
                             <RiSearchLine />
                         </Link>
+                        <HeaderProfileMenu />
                         <Link href="/cart" className="text-purple-705 hover:opacity-80 transition cursor-pointer relative flex items-center" aria-label="Cart">
                             <RiShoppingCartLine />
                             {totalItemsInCart > 0 && (
@@ -78,9 +80,6 @@ export default function FoodLayout({
                                     {totalItemsInCart}
                                 </span>
                             )}
-                        </Link>
-                        <Link href="/home" className="text-purple-705 hover:opacity-80 transition cursor-pointer" aria-label="Account">
-                            <RiUserLine />
                         </Link>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ export default function DeliveryAddressCard({
                 onClick={onOpenChangeAddress}
                 className="text-green-600 text-xs font-bold bg-green-50 px-3 py-1.5 rounded-full hover:bg-green-100 transition active:scale-95 flex-shrink-0"
             >
-                Change
+                {address.includes("No delivery") || address.includes("No location") || address.includes("No address") ? "Select Address" : "Change"}
             </button>
         </div>
     );
