@@ -90,9 +90,9 @@ export default function TrendingProducts({
                                     <span className="text-sm font-extrabold text-gray-900">
                                         ₹{finalPrice}
                                     </span>
-                                    {prod.selling_price && prod.selling_price > finalPrice && (
+                                    {prod.mrp && prod.mrp > finalPrice && (
                                         <span className="text-[10px] text-gray-400 line-through">
-                                            ₹{prod.selling_price}
+                                            ₹{prod.mrp}
                                         </span>
                                     )}
                                 </div>
@@ -100,18 +100,12 @@ export default function TrendingProducts({
 
                             {/* Cart Action button */}
                             <div className="mt-3.5">
-                                {isProductLoading ? (
-                                    <button
-                                        disabled
-                                        className="w-full bg-purple-100 text-purple-700 rounded-lg py-1.5 text-[11px] font-bold shadow-sm h-7 flex items-center justify-center animate-pulse"
-                                    >
-                                        Updating...
-                                    </button>
-                                ) : qty > 0 ? (
-                                    <div className="flex items-center justify-between bg-purple-700 text-white rounded-lg h-7 px-2">
+                                {qty > 0 ? (
+                                    <div className={`flex items-center justify-between bg-purple-700 text-white rounded-lg h-7 px-2 transition-opacity duration-150 ${isProductLoading ? "opacity-60 pointer-events-none" : ""}`}>
                                         <button
                                             onClick={() => onDecQty(compositeKey)}
                                             className="text-xs font-extrabold h-full px-1.5 hover:bg-purple-800 rounded transition cursor-pointer"
+                                            disabled={isProductLoading}
                                         >
                                             -
                                         </button>
@@ -119,14 +113,16 @@ export default function TrendingProducts({
                                         <button
                                             onClick={() => onIncQty(compositeKey)}
                                             className="text-xs font-extrabold h-full px-1.5 hover:bg-purple-800 rounded transition cursor-pointer"
+                                            disabled={isProductLoading}
                                         >
                                             +
                                         </button>
                                     </div>
                                 ) : (
                                     <button
+                                        disabled={isProductLoading}
                                         onClick={() => onAddQty(prod.product_id, bizId, prod.name)}
-                                        className="w-full bg-purple-50 text-purple-700 hover:bg-purple-100 active:scale-[0.98] rounded-lg py-1.5 text-xs font-bold shadow-sm transition-all duration-150 cursor-pointer h-7 flex items-center justify-center"
+                                        className={`w-full bg-purple-50 text-purple-700 hover:bg-purple-100 active:scale-[0.98] rounded-lg py-1.5 text-xs font-bold shadow-sm transition-all duration-150 cursor-pointer h-7 flex items-center justify-center ${isProductLoading ? "opacity-60 cursor-not-allowed" : ""}`}
                                     >
                                         Add to Cart
                                     </button>
