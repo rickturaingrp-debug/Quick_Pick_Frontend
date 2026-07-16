@@ -14,3 +14,18 @@ export interface VendorBannersResponse {
     message: string;
     data: VendorBanner[];
 }
+
+export interface Banner {
+    id: string;
+    title: string;
+    image: string | null;
+    sort_order: number;
+    status: boolean;
+    status_label: string;
+}
+
+export interface BannerResponse {
+    success: boolean;
+    message: string;
+    data: Banner[];
+}

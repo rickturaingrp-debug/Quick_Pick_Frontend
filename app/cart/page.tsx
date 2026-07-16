@@ -354,9 +354,18 @@ export default function CheckoutPage() {
                             <button
                                 onClick={() => {
                                     setSuccessOrder(null);
+                                    router.push("/orders");
+                                }}
+                                className="flex-1 py-3 bg-purple-100 hover:bg-purple-200 active:scale-[0.98] text-purple-700 rounded-xl font-bold transition text-xs cursor-pointer"
+                            >
+                                View Orders
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setSuccessOrder(null);
                                     router.push("/home");
                                 }}
-                                className="flex-1 py-3 bg-purple-600 hover:bg-purple-700 active:scale-[0.98] text-white rounded-xl font-bold shadow-md transition text-xs"
+                                className="flex-1 py-3 bg-purple-600 hover:bg-purple-700 active:scale-[0.98] text-white rounded-xl font-bold shadow-md transition text-xs cursor-pointer"
                             >
                                 Continue Shopping
                             </button>

@@ -8,6 +8,7 @@ export const usePlaceOrder = (userId: number) => {
         mutationFn: (payload: PlaceOrderPayload) => placeOrder(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["cart", userId] });
+            queryClient.refetchQueries({ queryKey: ["orders", userId] });
         },
     });
 };

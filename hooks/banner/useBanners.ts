@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getVendorBanners } from "@/services/banner.service";
+import { getVendorBanners, getBanners } from "@/services/banner.service";
 
 export const useVendorBanners = (
     businessId: string | null,
@@ -9,5 +9,12 @@ export const useVendorBanners = (
         queryKey: ["vendorBanners", businessId, bannerType],
         queryFn: () => getVendorBanners(businessId!, bannerType),
         enabled: !!businessId,
+    });
+};
+
+export const useBanners = () => {
+    return useQuery({
+        queryKey: ["banners"],
+        queryFn: () => getBanners(),
     });
 };

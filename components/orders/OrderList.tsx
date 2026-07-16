@@ -15,27 +15,27 @@ export default function OrderList({ orders }: OrderListProps) {
 
     if (orders.length === 0) {
         return (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl border border-[#EAE3D6] shadow-sm min-h-[350px]">
-                <div className="w-16 h-16 bg-[#F1EDFB] text-[#4C3F91] rounded-full flex items-center justify-center mb-5 border border-[#E5DEF8]">
-                    <RiInboxArchiveLine size={28} />
+            <div className="flex flex-col items-center justify-center p-8 text-center bg-white rounded-lg border border-gray-200 min-h-[320px]">
+                <div className="w-12 h-12 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mb-4 border border-gray-200">
+                    <RiInboxArchiveLine size={22} />
                 </div>
-                <h3 className="text-base font-bold text-[#1E1B4B]">No orders found</h3>
-                <p className="text-[#A39C8C] text-xs mt-1.5 mb-6 max-w-xs leading-relaxed">
-                    You haven't placed any orders with Bazaar yet. Browse our selection and place your first order!
+                <h3 className="text-sm font-semibold text-gray-900">No orders found</h3>
+                <p className="text-xs text-gray-500 mt-1 mb-5 max-w-xs leading-relaxed">
+                    You haven't placed any orders with Bazaar yet. Browse our selection and place your first order.
                 </p>
                 <button
                     onClick={() => router.push("/home")}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4C3F91] hover:bg-[#3E3378] active:scale-[0.98] text-white rounded-xl font-bold shadow-md shadow-[#4C3F91]/20 transition text-xs"
+                    className="inline-flex items-center gap-2 px-5 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-md font-medium transition-colors text-xs"
                 >
-                    <RiStore2Line size={15} />
-                    Start Shopping
+                    <RiStore2Line size={14} />
+                    Start shopping
                 </button>
             </div>
         );
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
             {orders.map((order) => (
                 <OrderCard key={order.id} order={order} />
             ))}

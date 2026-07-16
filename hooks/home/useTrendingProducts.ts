@@ -143,6 +143,7 @@ export function useTrendingProducts(categories: any[]) {
                 business_id: bizId,
                 business_category_id: catId,
                 product_id: id,
+                product_variant_id: prod?.primary_variant?.variant_id || undefined,
                 quantity: 1,
             });
         } catch (err) {

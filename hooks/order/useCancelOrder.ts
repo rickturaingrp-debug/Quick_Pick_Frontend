@@ -9,7 +9,7 @@ export const useCancelOrder = (orderId: string, userId?: number | null) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["order-details", orderId] });
             if (userId) {
-                queryClient.invalidateQueries({ queryKey: ["orders", userId] });
+                queryClient.refetchQueries({ queryKey: ["orders", userId] });
             }
         },
     });

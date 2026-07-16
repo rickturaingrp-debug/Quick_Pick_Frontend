@@ -14,9 +14,15 @@ export const placeOrder = async (payload: PlaceOrderPayload): Promise<PlaceOrder
     return data;
 };
 
-export const getOrders = async (userId: number, page: number = 1): Promise<OrderListResponse> => {
+export const getOrders = async (
+    userId: number,
+    page: number = 1,
+    perPage: number = 10,
+    search: string = "",
+    orderStatus: string = ""
+): Promise<OrderListResponse> => {
     const { data } = await categoryApi.get<OrderListResponse>(
-        `/member/orders?user_id=${userId}&page=${page}`
+        `/member/orders?user_id=${userId}&page=${page}&per_page=${perPage}&search=${encodeURIComponent(search)}&order_status=${encodeURIComponent(orderStatus)}`
     );
     return data;
 };

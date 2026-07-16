@@ -7,6 +7,7 @@ import BottomNavigation from "@/components/home/BottomNavigation";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import TrendingProducts from "@/components/home/TrendingProducts";
 import PopularStores from "@/components/home/PopularStores";
+import HomeBanners from "@/components/home/HomeBanners";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useBusinessCategories } from "@/hooks/category/useBusinessCategories";
 import { useTrendingProducts } from "@/hooks/home/useTrendingProducts";
@@ -46,6 +47,9 @@ export default function HomePage() {
         </span>
             </button>
         </div>
+
+            {/* BANNERS SECTION */}
+            <HomeBanners />
 
             {/* DYNAMIC CATEGORIES PREVIEW */}
             <CategoriesSection 
