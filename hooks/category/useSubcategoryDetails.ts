@@ -37,6 +37,46 @@ export const useSubcategoryDetails = () => {
     const categoryName = subcategories[0]?.category?.name || "";
     const isFashion = categoryName.toLowerCase().includes("fashion") || categoryId === "wMvbmOeYAl";
 
+    // Extract dynamic filter options from productsData and subcategories
+    const filterOptions = useMemo(() => {
+        const rawProducts = productsData?.data || [];
+        
+        // Categories from subcategories prop
+        const categoriesList = subcategories.map(sub => sub.name);
+
+        // Sets/Maps for deduplication
+        const sizesMap = new Map<string, string>(); // lowercase -> original case
+        const colorsMap = new Map<string, { name: string; color_code: string }>(); // lowercase -> { name, color_code }
+        const fabricsMap = new Map<string, string>(); // lowercase -> original case
+
+        rawProducts.forEach((product) => {
+            const attributes = product.primary_variant?.attributes || [];
+            attributes.forEach((attr) => {
+                const name = attr.attribute_name?.toLowerCase();
+                const value = attr.value?.trim();
+                if (!value) return;
+
+                if (name === "size") {
+                    sizesMap.set(value.toLowerCase(), value);
+                } else if (name === "color") {
+                    colorsMap.set(value.toLowerCase(), {
+                        name: value,
+                        color_code: attr.color_code || ""
+                    });
+                } else if (name === "fabric") {
+                    fabricsMap.set(value.toLowerCase(), value);
+                }
+            });
+        });
+
+        return {
+            categories: categoriesList,
+            sizes: Array.from(sizesMap.values()),
+            colors: Array.from(colorsMap.values()),
+            fabrics: Array.from(fabricsMap.values())
+        };
+    }, [productsData?.data, subcategories]);
+
     // Dynamic Filter & Sort Logic (Functional Filters)
     const filteredProducts = useMemo(() => {
         const rawProducts = productsData?.data || [];
@@ -46,10 +86,22 @@ export const useSubcategoryDetails = () => {
 
         const { sortBy, categories, sizes, priceRange, color, fabrics } = activeFilters;
 
-        // 1. Filter by category names
+        // 1. Filter by category names (using subcategory IDs or fallback substrings)
         if (categories && categories.length > 0) {
             result = result.filter((product) =>
-                categories.some((cat) => product.name.toLowerCase().includes(cat.toLowerCase()))
+                categories.some((catName) => {
+                    const matchedSub = subcategories.find(
+                        (sub) => sub.name.toLowerCase() === catName.toLowerCase()
+                    );
+                    if (matchedSub) {
+                        return (
+                            product.sub_category_id === matchedSub.id ||
+                            product.business_sub_category_id === matchedSub.id ||
+                            product.name.toLowerCase().includes(catName.toLowerCase())
+                        );
+                    }
+                    return product.name.toLowerCase().includes(catName.toLowerCase());
+                })
             );
         }
 
@@ -116,7 +168,7 @@ export const useSubcategoryDetails = () => {
         }
 
         return result;
-    }, [productsData?.data, activeFilters]);
+    }, [productsData?.data, activeFilters, subcategories]);
 
     return {
         categoryId,
@@ -137,5 +189,6 @@ export const useSubcategoryDetails = () => {
         products: filteredProducts,
         isProductsLoading,
         setActiveFilters,
+        filterOptions,
     };
 };

@@ -15,9 +15,21 @@ interface FilterSheetProps {
     open: boolean;
     onClose: () => void;
     onApply: (filters: FilterState) => void;
+    categories?: string[];
+    sizes?: string[];
+    colors?: { name: string; color_code: string }[];
+    fabrics?: string[];
 }
 
-export default function FilterSheet({ open, onClose, onApply }: FilterSheetProps) {
+export default function FilterSheet({
+    open,
+    onClose,
+    onApply,
+    categories = [],
+    sizes = [],
+    colors = [],
+    fabrics = []
+}: FilterSheetProps) {
     const [sortBy, setSortBy] = useState("popularity");
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -128,50 +140,54 @@ export default function FilterSheet({ open, onClose, onApply }: FilterSheetProps
                     </div>
 
                     {/* Category */}
-                    <div>
-                        <h4 className="font-medium mb-3 text-sm text-gray-800">Category</h4>
-                        <div className="flex flex-wrap gap-2">
-                            {["Kurtis", "Sarees", "Lehenga", "Salwar Suits", "Dupattas"].map((cat) => {
-                                const active = selectedCategories.includes(cat);
-                                return (
-                                    <button
-                                        key={cat}
-                                        onClick={() => toggleCategory(cat)}
-                                        className={`px-4 py-2 text-sm border rounded-full transition ${
-                                            active
-                                                ? "bg-purple-600 text-white border-purple-600"
-                                                : "border-gray-200 text-gray-700 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        {cat}
-                                    </button>
-                                );
-                            })}
+                    {categories.length > 0 && (
+                        <div>
+                            <h4 className="font-medium mb-3 text-sm text-gray-800">Category</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {categories.map((cat) => {
+                                    const active = selectedCategories.includes(cat);
+                                    return (
+                                        <button
+                                            key={cat}
+                                            onClick={() => toggleCategory(cat)}
+                                            className={`px-4 py-2 text-sm border rounded-full transition ${
+                                                active
+                                                    ? "bg-purple-600 text-white border-purple-600"
+                                                    : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Size */}
-                    <div>
-                        <h4 className="font-medium mb-3 text-sm text-gray-800">Size</h4>
-                        <div className="flex flex-wrap gap-2">
-                            {["XS", "S", "M", "L", "XL", "XXL"].map((size) => {
-                                const active = selectedSizes.includes(size);
-                                return (
-                                    <button
-                                        key={size}
-                                        onClick={() => toggleSize(size)}
-                                        className={`px-4 py-2 text-sm border rounded-full transition ${
-                                            active
-                                                ? "bg-purple-600 text-white border-purple-600"
-                                                : "border-gray-200 text-gray-700 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        {size}
-                                    </button>
-                                );
-                            })}
+                    {sizes.length > 0 && (
+                        <div>
+                            <h4 className="font-medium mb-3 text-sm text-gray-800">Size</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {sizes.map((size) => {
+                                    const active = selectedSizes.includes(size);
+                                    return (
+                                        <button
+                                            key={size}
+                                            onClick={() => toggleSize(size)}
+                                            className={`px-4 py-2 text-sm border rounded-full transition ${
+                                                active
+                                                    ? "bg-purple-600 text-white border-purple-600"
+                                                    : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            {size}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Price Range */}
                     <div>
@@ -195,56 +211,57 @@ export default function FilterSheet({ open, onClose, onApply }: FilterSheetProps
                     </div>
 
                     {/* Color */}
-                    <div>
-                        <h4 className="font-medium mb-3 text-sm text-gray-800">Color</h4>
-                        <div className="flex flex-wrap gap-3">
-                            {[
-                                { name: "red", bg: "bg-red-500" },
-                                { name: "green", bg: "bg-green-500" },
-                                { name: "yellow", bg: "bg-yellow-400" },
-                                { name: "blue", bg: "bg-blue-500" },
-                                { name: "pink", bg: "bg-pink-400" },
-                                { name: "black", bg: "bg-black" },
-                                { name: "white", bg: "bg-white border-gray-300" },
-                            ].map((color) => {
-                                const active = selectedColor === color.name;
-                                return (
-                                    <button
-                                        key={color.name}
-                                        onClick={() => setSelectedColor(color.name)}
-                                        className={`w-8 h-8 rounded-full border-2 transition ${color.bg} ${
-                                            active
-                                                ? "border-purple-600 scale-110"
-                                                : "border-gray-200 hover:scale-105"
-                                        }`}
-                                    />
-                                );
-                            })}
+                    {colors.length > 0 && (
+                        <div>
+                            <h4 className="font-medium mb-3 text-sm text-gray-800">Color</h4>
+                            <div className="flex flex-wrap gap-3">
+                                {colors.map((color) => {
+                                    const active = selectedColor === color.name;
+                                    const isWhite = color.name.toLowerCase() === "white" || color.color_code?.toLowerCase() === "#ffffff" || color.color_code?.toLowerCase() === "#fff";
+                                    return (
+                                        <button
+                                            key={color.name}
+                                            onClick={() => setSelectedColor(color.name)}
+                                            style={{ backgroundColor: color.color_code || color.name }}
+                                            className={`w-8 h-8 rounded-full border-2 transition ${
+                                                active
+                                                    ? "border-purple-600 scale-110 shadow-md"
+                                                    : isWhite
+                                                    ? "border-gray-300 hover:scale-105"
+                                                    : "border-gray-200 hover:scale-105"
+                                            }`}
+                                            title={color.name}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Fabric */}
-                    <div>
-                        <h4 className="font-medium mb-3 text-sm text-gray-800">Fabric</h4>
-                        <div className="flex flex-wrap gap-2">
-                            {["Cotton", "Silk", "Georgette", "Rayon", "Chiffon"].map((fabric) => {
-                                const active = selectedFabrics.includes(fabric);
-                                return (
-                                    <button
-                                        key={fabric}
-                                        onClick={() => toggleFabric(fabric)}
-                                        className={`px-4 py-2 text-sm border rounded-full transition ${
-                                            active
-                                                ? "bg-purple-600 text-white border-purple-600"
-                                                : "border-gray-200 text-gray-700 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        {fabric}
-                                    </button>
-                                );
-                            })}
+                    {fabrics.length > 0 && (
+                        <div>
+                            <h4 className="font-medium mb-3 text-sm text-gray-800">Fabric</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {fabrics.map((fabric) => {
+                                    const active = selectedFabrics.includes(fabric);
+                                    return (
+                                        <button
+                                            key={fabric}
+                                            onClick={() => toggleFabric(fabric)}
+                                            className={`px-4 py-2 text-sm border rounded-full transition ${
+                                                active
+                                                    ? "bg-purple-600 text-white border-purple-600"
+                                                    : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            {fabric}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Footer */}

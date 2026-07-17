@@ -28,6 +28,7 @@ export default function SubcategoryDetailPage() {
         products,
         isProductsLoading,
         setActiveFilters,
+        filterOptions,
     } = useSubcategoryDetails();
     const { openLocationPicker } = useAuthContext();
 
@@ -90,7 +91,15 @@ export default function SubcategoryDetailPage() {
             )}
 
             {/* Filters Bottom Sheet */}
-            <FilterSheet open={openFilter} onClose={() => setOpenFilter(false)} onApply={handleApplyFilters} />
+            <FilterSheet
+                open={openFilter}
+                onClose={() => setOpenFilter(false)}
+                onApply={handleApplyFilters}
+                categories={filterOptions.categories}
+                sizes={filterOptions.sizes}
+                colors={filterOptions.colors}
+                fabrics={filterOptions.fabrics}
+            />
         </main>
     );
 }
