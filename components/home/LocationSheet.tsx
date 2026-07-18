@@ -86,19 +86,19 @@ export default function LocationSheet({
                     </div>
 
                     {/* Current Location (GPS) */}
-                    <div className="space-y-2 mb-6">
-                        <div className="flex cursor-pointer items-center justify-between rounded-xl bg-gray-50 p-4 transition hover:bg-gray-100 active:scale-[0.99]">
-                            <div className="flex items-center gap-3">
-                                <RiFocus3Line className="text-purple-600" size={22} />
-                                <div>
-                                    <p className="font-semibold text-purple-600">
-                                        Use your current location
-                                    </p>
-                                </div>
-                            </div>
-                            <RiArrowRightSLine className="text-gray-400" size={22} />
-                        </div>
-                    </div>
+                    {/*<div className="space-y-2 mb-6">*/}
+                    {/*    <div className="flex cursor-pointer items-center justify-between rounded-xl bg-gray-50 p-4 transition hover:bg-gray-100 active:scale-[0.99]">*/}
+                    {/*        <div className="flex items-center gap-3">*/}
+                    {/*            <RiFocus3Line className="text-purple-600" size={22} />*/}
+                    {/*            <div>*/}
+                    {/*                <p className="font-semibold text-purple-600">*/}
+                    {/*                    Use your current location*/}
+                    {/*                </p>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <RiArrowRightSLine className="text-gray-400" size={22} />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     {/* Saved Addresses Section Title */}
                     <p className="mb-3 mt-6 text-sm text-gray-500">

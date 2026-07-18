@@ -28,12 +28,12 @@ export default function PaymentAndPlaceOrder({
 
     const getPaymentDetails = (method: "WALLET" | "ONLINE" | "COD") => {
         switch (method) {
-            case "WALLET":
-                return {
-                    label: "Bazaar Wallet",
-                    description: "Pay using wallet balance",
-                    icon: <RiWallet3Line className="text-purple-600" size={20} />,
-                };
+            // case "WALLET":
+            //     return {
+            //         label: "Bazaar Wallet",
+            //         description: "Pay using wallet balance",
+            //         icon: <RiWallet3Line className="text-purple-600" size={20} />,
+            //     };
             case "ONLINE":
                 return {
                     label: "BHIM UPI / Cards / NetBanking",
@@ -94,7 +94,11 @@ export default function PaymentAndPlaceOrder({
                 <>
                     <div
                         onClick={() => setShowSelector(false)}
-                        className="fixed inset-0 bg-black/45 backdrop-blur-sm z-[99998] transition-opacity duration-300"
+                        className={`fixed inset-0 z-[99998] bg-black/45 backdrop-blur-sm transition-all duration-300 ease-out ${
+                            showSelector
+                                ? "opacity-100 visible"
+                                : "opacity-0 invisible"
+                        }`}
                     />
                     <div className="fixed left-0 bottom-0 z-[99999] w-full rounded-t-3xl bg-white shadow-2xl transition-transform duration-300 translate-y-0 max-w-3xl left-1/2 -translate-x-1/2">
                         <div className="p-5 pt-6 pb-8">
@@ -111,7 +115,7 @@ export default function PaymentAndPlaceOrder({
                             </div>
 
                             <div className="space-y-2.5">
-                                {(["ONLINE", "COD", "WALLET"] as const).map((method) => {
+                                {(["ONLINE", "COD"] as const).map((method) => {
                                     const details = getPaymentDetails(method);
                                     const isSelected = paymentMethod === method;
                                     return (
